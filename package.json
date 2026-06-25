@@ -1,0 +1,16 @@
+{
+  "name": "yes",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Ali Mehraj",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "neo4j-driver": "^6.1.0"
+  }
+}
