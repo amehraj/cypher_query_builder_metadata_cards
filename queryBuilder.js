@@ -6,7 +6,7 @@ function buildQuery(request) {
     targetNode,
     filterNode,
     filterProperty,
-    parameterName,
+    parameterValue,
     targetRelationship
   } = request;
 
@@ -75,7 +75,7 @@ MATCH (${alias(edge.from)})
   cypher += `
 
 WHERE ${alias(filterNode)}.${filterProperty}
-      = "${parameterName}"
+      = "${parameterValue}"
 RETURN ${alias(targetNode)}
 `;
 // RETURN DISTINCT ${alias(targetNode)} AS ${targetNode},

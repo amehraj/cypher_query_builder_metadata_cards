@@ -15,12 +15,11 @@ const driver = neo4j.driver(
 
 
 const request = {
-  targetNode: "Data",
-  filterNode: "User_Type",
-  targetRelationship: "DATA_INTENDED_USER",
-  filterProperty: "user_type",
-  parameterName: "Doctor"
-
+  targetNode: "Software_System",
+  filterNode: "Severity",
+  targetRelationship: "DATA_RISK_SEVERITY",
+  filterProperty: "severity",
+  parameterValue: "High"
 }
 
 async function run() {
@@ -39,7 +38,7 @@ async function run() {
     console.log(`Connected to Neo4j server version: ${serverInfo.version}`);
 
     const result = await driver.executeQuery(cypher);
-    console.log(result);
+    //console.log(result);
 
 
     const jsonData = result.records.map(record => {
