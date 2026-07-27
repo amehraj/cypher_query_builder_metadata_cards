@@ -1,9 +1,9 @@
 const request = {
-  targetNode: "Software_User",
-  filterNode: "Software_Component",
-  targetRelationship: "HAS_ACCESS",
-  filterProperty: "software_component_name",
-  parameterValue: "View Record Component"
+  targetNode: "Software_System",
+  filterNode: "Severity",
+  targetRelationship: "DATA_RISK_SEVERITY",
+  filterProperty: "severity",
+  parameterValue: "High"
 };
 
 module.exports = request;
