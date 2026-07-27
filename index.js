@@ -4,6 +4,7 @@ const neo4j = require("neo4j-driver");
 require("dotenv").config();
 
 const { buildQuery } = require("./queryBuilder");
+const request = require("./request");
 
 const driver = neo4j.driver(
   process.env.NEO4J_URI,
@@ -12,15 +13,6 @@ const driver = neo4j.driver(
     process.env.NEO4J_PASSWORD
   )
 );
-
-
-const request = {
-  targetNode: "Software_System",
-  filterNode: "Severity",
-  targetRelationship: "DATA_RISK_SEVERITY",
-  filterProperty: "severity",
-  parameterValue: "High"
-}
 
 async function run() {
 
