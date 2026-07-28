@@ -3,25 +3,25 @@ const { findPath, findOutgoingEdge } = require("./pathFinder");
 function buildQuery(request) {
 
   const {
+    analysisNode,
     targetNode,
-    filterNode,
-    filterProperty,
-    parameterValue,
+    targetProperty,
+    targetValue,
     targetRelationship
   } = request;
 
   let path =
     findPath(
-      targetNode,
-      filterNode
+      analysisNode,
+      targetNode
     );
 
   let appendedOutgoing = null;
 
   // If a targetRelationship is specified, try to find a path to a node
-  // that has an outgoing edge with that relationship to the filterNode.
+  // that has an outgoing edge with that relationship to the targetNode.
   if (targetRelationship && !path) {
-    const found = findPathToNodeWithOutgoingRelationship(targetNode, targetRelationship, filterNode);
+    const found = findPathToNodeWithOutgoingRelationship(analysisNode, targetRelationship, targetNode);
     if (found) {
       path = found.path.concat(found.outgoingEdge);
       appendedOutgoing = found.outgoingEdge;
@@ -30,7 +30,7 @@ function buildQuery(request) {
 
   if (!path) {
     throw new Error(
-      `No path found from ${targetNode} to ${filterNode}`
+      `No path found from ${analysisNode} to ${targetNode}`
     );
   }
 
@@ -52,7 +52,7 @@ function buildQuery(request) {
   }
 
   let cypher =
-    `MATCH (${alias(targetNode)}:${targetNode})`;
+    `MATCH (${alias(analysisNode)}:${analysisNode})`;
 
   for (const edge of path) {
     cypher += `
@@ -74,11 +74,11 @@ MATCH (${alias(edge.from)})
 
   cypher += `
 
-WHERE ${alias(filterNode)}.${filterProperty}
-      = "${parameterValue}"
-RETURN ${alias(targetNode)}
+WHERE ${alias(targetNode)}.${targetProperty}
+      = "${targetValue}"
+RETURN ${alias(analysisNode)}
 `;
-// RETURN DISTINCT ${alias(targetNode)} AS ${targetNode},
+// RETURN DISTINCT ${alias(analysisNode)} AS ${analysisNode},
   return cypher;
 }
 

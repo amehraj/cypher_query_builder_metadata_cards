@@ -1,6 +1,6 @@
 const { graphEdges } = require("./schema");
 
-function findPath(startNode, targetNode) {
+function findPath(startNode, analysisNode) {
 
   const queue = [
     {
@@ -15,7 +15,7 @@ function findPath(startNode, targetNode) {
 
     const current = queue.shift();
 
-    if (current.node === targetNode) {
+    if (current.node === analysisNode) {
       return current.path;
     }
 

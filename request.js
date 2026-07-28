@@ -1,9 +1,9 @@
 const request = {
-  targetNode: "Software_System",
-  filterNode: "Severity",
+  analysisNode: "Software_System",
+  targetNode: "Severity",
   targetRelationship: "DATA_RISK_SEVERITY",
-  filterProperty: "severity",
-  parameterValue: "High"
+  targetProperty: "severity",
+  targetValue: "High"
 };
 
 module.exports = request;

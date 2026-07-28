@@ -1,21 +1,21 @@
 const request_1 = {
-  targetNode: "Software_System",
-  filterNode: "Severity",
+  analysisNode: "Software_System",
+  targetNode: "Severity",
   targetRelationship: "DATA_RISK_SEVERITY",
-  filterProperty: "severity",
-  parameterValue: "High"
+  targetProperty: "severity",
+  targetValue: "High"
 }
 const request_2 = {
-  targetNode: "AI_Model",
-  filterNode: "Domain",
+  analysisNode: "AI_Model",
+  targetNode: "Domain",
   targetRelationship: "AI_MODEL_INTENDED_USE_DOMAIN",
-  filterProperty: "domain_name",
-  parameterValue: "Object Recognition"
+  targetProperty: "domain_name",
+  targetValue: "Object Recognition"
 }
 const request_3 = {
-  targetNode: "Software_User",
-  filterNode: "Software_Component",
+  analysisNode: "Software_User",
+  targetNode: "Software_Component",
   targetRelationship: "HAS_ACCESS",
-  filterProperty: "software_component_name",
-  parameterValue: "View Record Component"
+  targetProperty: "software_component_name",
+  targetValue: "View Record Component"
 }
