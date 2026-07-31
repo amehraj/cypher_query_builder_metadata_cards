@@ -8,9 +8,9 @@ const request = {
       targetValue: "High"
     },
     {
-      targetNode: "Domain",
-      targetRelationship: "AI_MODEL_INTENDED_USE_DOMAIN",
-      targetProperty: "domain_name",
+      targetNode: "Use_Type",
+      targetRelationship: "DATA_INTENDED_USE_TYPE",
+      targetProperty: "use_type",
       targetValue: "Object Recognition"
     }
   ]

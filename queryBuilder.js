@@ -94,12 +94,21 @@ function buildQuery(request) {
   let cypher =
     `MATCH (${alias(analysisNode, `analysis:${analysisNode}`)}:${analysisNode})`;
 
+  const emittedMatches = new Set();
+
   resolvedTargets.forEach((targetCondition, index) => {
     for (const edge of targetCondition.path) {
-      cypher += `
-MATCH (${alias(edge.from, `${index}:${edge.from}`)})
+      const fromAlias = alias(edge.from);
+      const toAlias = alias(edge.to);
+      const matchKey = `${fromAlias}->${edge.relationship}->${toAlias}`;
+
+      if (!emittedMatches.has(matchKey)) {
+        cypher += `
+MATCH (${fromAlias})
       -[:${edge.relationship}]
-      ->(${alias(edge.to, `${index}:${edge.to}`)}:${edge.to})`;
+      ->(${toAlias}:${edge.to})`;
+        emittedMatches.add(matchKey);
+      }
 
       if (targetCondition.targetRelationship && edge.relationship === targetCondition.targetRelationship) {
         break;
@@ -116,7 +125,7 @@ MATCH (${alias(edge.from, `${index}:${edge.from}`)})
       ? `"${targetCondition.targetValue.replace(/"/g, '\\"')}"`
       : JSON.stringify(targetCondition.targetValue);
 
-    return `${alias(targetCondition.targetNode, `${index}:${targetCondition.targetNode}`)}.${targetCondition.targetProperty} = ${valueLiteral}`;
+    return `${alias(targetCondition.targetNode)}.${targetCondition.targetProperty} = ${valueLiteral}`;
   });
 
   cypher += `
