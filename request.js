@@ -11,7 +11,7 @@ const request = {
       targetNode: "Use_Type",
       targetRelationship: "DATA_INTENDED_USE_TYPE",
       targetProperty: "use_type",
-      targetValue: "Object Recognition"
+      targetValue: "Medical Diagnosis"
     }
   ]
 };

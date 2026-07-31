@@ -30,7 +30,6 @@ async function run() {
     console.log(`Connected to Neo4j server version: ${serverInfo.version}`);
 
     const result = await driver.executeQuery(cypher);
-    //console.log(result);
 
 
     const jsonData = result.records.map(record => {

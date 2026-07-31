@@ -103,10 +103,7 @@ function buildQuery(request) {
       const matchKey = `${fromAlias}->${edge.relationship}->${toAlias}`;
 
       if (!emittedMatches.has(matchKey)) {
-        cypher += `
-MATCH (${fromAlias})
-      -[:${edge.relationship}]
-      ->(${toAlias}:${edge.to})`;
+        cypher += `\nMATCH (${fromAlias})-[:${edge.relationship}]->(${toAlias}:${edge.to})`;
         emittedMatches.add(matchKey);
       }
 
@@ -128,11 +125,7 @@ MATCH (${fromAlias})
     return `${alias(targetCondition.targetNode)}.${targetCondition.targetProperty} = ${valueLiteral}`;
   });
 
-  cypher += `
-
-WHERE ${whereClauses.join(" AND ")}
-RETURN ${alias(analysisNode, `analysis:${analysisNode}`)}
-`;
+  cypher += `\nWHERE ${whereClauses.join(" AND ")}\nRETURN ${alias(analysisNode, `analysis:${analysisNode}`)}\n`;
 
   return cypher;
 }
