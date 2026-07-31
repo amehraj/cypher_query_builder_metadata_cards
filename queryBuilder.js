@@ -1,4 +1,4 @@
-const { findPath, findOutgoingEdge } = require("./pathFinder");
+const { findPath, findPathToNodeWithOutgoingRelationship } = require("./pathFinder");
 
 function buildQuery(request) {
 
@@ -7,78 +7,133 @@ function buildQuery(request) {
     targetNode,
     targetProperty,
     targetValue,
-    targetRelationship
+    targetRelationship,
+    targets
   } = request;
 
-  let path =
-    findPath(
-      analysisNode,
-      targetNode
-    );
+  const targetConditions = Array.isArray(targets) && targets.length
+    ? targets
+    : [
+        {
+          targetNode,
+          targetProperty,
+          targetValue,
+          targetRelationship
+        }
+      ];
 
-  let appendedOutgoing = null;
+  if (!analysisNode) {
+    throw new Error("An analysisNode is required to build a query");
+  }
 
-  // If a targetRelationship is specified, try to find a path to a node
-  // that has an outgoing edge with that relationship to the targetNode.
-  if (targetRelationship && !path) {
-    const found = findPathToNodeWithOutgoingRelationship(analysisNode, targetRelationship, targetNode);
-    if (found) {
-      path = found.path.concat(found.outgoingEdge);
-      appendedOutgoing = found.outgoingEdge;
+  if (!targetConditions.length) {
+    throw new Error("At least one target condition is required to build a query");
+  }
+
+  const resolvedTargets = targetConditions.map((condition) => {
+    const {
+      targetNode: conditionTargetNode,
+      targetProperty: conditionTargetProperty,
+      targetValue: conditionTargetValue,
+      targetRelationship: conditionTargetRelationship
+    } = condition;
+
+    if (!conditionTargetNode || !conditionTargetProperty || conditionTargetValue === undefined) {
+      throw new Error("Each target condition must include targetNode, targetProperty, and targetValue");
     }
-  }
 
-  if (!path) {
-    throw new Error(
-      `No path found from ${analysisNode} to ${targetNode}`
-    );
-  }
+    let path = null;
+    let appendedOutgoing = null;
+
+    if (conditionTargetRelationship) {
+      const found = findPathToNodeWithOutgoingRelationship(analysisNode, conditionTargetRelationship, conditionTargetNode);
+      if (found) {
+        path = found.path.concat(found.outgoingEdge);
+        appendedOutgoing = found.outgoingEdge;
+      }
+    }
+
+    if (!path) {
+      path = findPath(analysisNode, conditionTargetNode);
+    }
+
+    if (!path) {
+      throw new Error(
+        `No path found from ${analysisNode} to ${conditionTargetNode}`
+      );
+    }
+
+    return {
+      targetNode: conditionTargetNode,
+      targetProperty: conditionTargetProperty,
+      targetValue: conditionTargetValue,
+      targetRelationship: conditionTargetRelationship,
+      path,
+      appendedOutgoing
+    };
+  });
 
   const aliases = {};
 
   let aliasCounter = 0;
 
-  function alias(label) {
+  function alias(label, key) {
+    const aliasKey = key || label;
 
-    if (!aliases[label]) {
-      aliases[label] =
+    if (!aliases[aliasKey]) {
+      aliases[aliasKey] =
         label.toLowerCase()
           .replace(/[^a-z]/g, "")
           .substring(0, 3) +
         aliasCounter++;
     }
 
-    return aliases[label];
+    return aliases[aliasKey];
   }
 
   let cypher =
-    `MATCH (${alias(analysisNode)}:${analysisNode})`;
+    `MATCH (${alias(analysisNode, `analysis:${analysisNode}`)}:${analysisNode})`;
 
-  for (const edge of path) {
-    cypher += `
-MATCH (${alias(edge.from)})
+  const emittedMatches = new Set();
+
+  resolvedTargets.forEach((targetCondition, index) => {
+    for (const edge of targetCondition.path) {
+      const fromAlias = alias(edge.from);
+      const toAlias = alias(edge.to);
+      const matchKey = `${fromAlias}->${edge.relationship}->${toAlias}`;
+
+      if (!emittedMatches.has(matchKey)) {
+        cypher += `
+MATCH (${fromAlias})
       -[:${edge.relationship}]
-      ->(${alias(edge.to)}:${edge.to})`;
+      ->(${toAlias}:${edge.to})`;
+        emittedMatches.add(matchKey);
+      }
 
-    // If this edge matches the target relationship, stop here
-    if (targetRelationship && edge.relationship === targetRelationship) {
-      break;
-    }
+      if (targetCondition.targetRelationship && edge.relationship === targetCondition.targetRelationship) {
+        break;
+      }
 
-    // If we already appended an outgoing edge as part of a found path,
-    // stop after reaching it.
-    if (appendedOutgoing && edge === appendedOutgoing) {
-      break;
+      if (targetCondition.appendedOutgoing && edge === targetCondition.appendedOutgoing) {
+        break;
+      }
     }
-  }
+  });
+
+  const whereClauses = resolvedTargets.map((targetCondition, index) => {
+    const valueLiteral = typeof targetCondition.targetValue === "string"
+      ? `"${targetCondition.targetValue.replace(/"/g, '\\"')}"`
+      : JSON.stringify(targetCondition.targetValue);
+
+    return `${alias(targetCondition.targetNode)}.${targetCondition.targetProperty} = ${valueLiteral}`;
+  });
 
   cypher += `
 
-WHERE ${alias(targetNode)}.${targetProperty}
-      = "${targetValue}"
-RETURN ${alias(analysisNode)}
+WHERE ${whereClauses.join(" AND ")}
+RETURN ${alias(analysisNode, `analysis:${analysisNode}`)}
 `;
-// RETURN DISTINCT ${alias(analysisNode)} AS ${analysisNode},
+
   return cypher;
 }
 
