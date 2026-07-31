@@ -24,10 +24,11 @@ test('buildQuery supports multiple target conditions with AND clauses', () => {
 
   const query = buildQuery(request);
 
-  assert.match(query, /MATCH \(.*:Software_System\)/);
-  assert.match(query, /\[:HAS_DATA\]/);
+  assert.match(query, /MATCH \(sof0:Software_System\)/);
+  assert.match(query, /MATCH \(sof0\)-\[:HAS_DATA\]->\([^)]*:Data\)/);
   assert.match(query, /\[:DATA_RISK_SEVERITY\]/);
   assert.match(query, /\[:HAS_AI_MODEL\]/);
   assert.match(query, /\[:AI_MODEL_INTENDED_USE_DOMAIN\]/);
   assert.match(query, /WHERE .*severity = "High" AND .*domain = "Object Recognition"/s);
+  assert.match(query, /RETURN sof0/);
 });

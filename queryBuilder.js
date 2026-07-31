@@ -91,8 +91,9 @@ function buildQuery(request) {
     return aliases[aliasKey];
   }
 
+  const analysisAlias = alias(analysisNode);
   let cypher =
-    `MATCH (${alias(analysisNode, `analysis:${analysisNode}`)}:${analysisNode})`;
+    `MATCH (${analysisAlias}:${analysisNode})`;
 
   const emittedMatches = new Set();
 
@@ -125,7 +126,7 @@ function buildQuery(request) {
     return `${alias(targetCondition.targetNode)}.${targetCondition.targetProperty} = ${valueLiteral}`;
   });
 
-  cypher += `\nWHERE ${whereClauses.join(" AND ")}\nRETURN ${alias(analysisNode, `analysis:${analysisNode}`)}\n`;
+  cypher += `\nWHERE ${whereClauses.join(" AND ")}\nRETURN ${analysisAlias}\n`;
 
   return cypher;
 }
