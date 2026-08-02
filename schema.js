@@ -65,8 +65,20 @@ const graphEdges = [
 
   {
     from: "Software_Component",
-    relationship: "SOFTWARE_COMPONENT_ACTION_TYPE_OF",
-    to: "Action_Type"
+    relationship: "HAS_FUNCTION",
+    to: "Function_Type"
+  },
+
+  {
+    from: "Software_Component",
+    relationship: "ACCESS_AI_MODEL",
+    to: "AI_Model"
+  },
+
+  {
+    from: "Software_Component",
+    relationship: "ACCESS_DATA",
+    to: "Data"
   },
 
   {
