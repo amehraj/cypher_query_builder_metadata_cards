@@ -1,0 +1,269 @@
+{
+  "data_cards": [
+    {
+      "id": "data_1",
+      "data_card_section": {
+        "title": "patient_records_dataset",
+        "description": "A dataset containing sensitive patient records intended for medical use. Includes access restrictions and safety constraints."
+      },
+      "summary": {
+        "data_type": "static_data",
+        "primary_format": "structured_patient_records",
+        "sensitivity": "high",
+        "user_access": ["doctor", "patient"]
+      },
+      "authorship": {
+        "publisher": "unknown",
+        "industry_type": "healthcare",
+        "contacts": {
+          "publisher_contact": null,
+          "author_contact": null,
+          "authors": []
+        },
+        "year": null
+      },
+      "dataset": {
+        "overview": {
+          "source": "clinical_systems",
+          "selection": "patient_records_collected_under_medical_protocols",
+          "excluded_data": "non_medical_records"
+        },
+        "example_of_data_points": {
+          "record_id": "data_1",
+          "type": "patient_records",
+          "sensitivity": "high",
+          "access_roles": ["doctor", "patient"]
+        },
+        "motivations_and_intentions": {
+          "purpose": ["medical_analysis", "clinical_decision_support"],
+          "domain": ["healthcare"],
+          "primary_motivation": "enable_safe_and_effective_use_of_patient_data_in_medical_contexts",
+          "intended_use": ["medical_diagnosis", "treatment_planning"]
+        },
+        "access_retention_and_wipout": {
+          "access": "restricted",
+          "cost": "not_applicable",
+          "prerequisites": "medical_authorization_required"
+        },
+        "dataset_provenance": {
+          "derived_from": "clinical_data_systems",
+          "annotation_period": null,
+          "release_date": null,
+          "version": null,
+          "status": "confidential"
+        },
+        "human_and_other_sensitive_attributes": {
+          "attributes": ["health_status", "demographics"],
+          "intentionality": {
+            "health": "intended",
+            "demographics": "intended"
+          },
+          "distribution": {}
+        },
+        "extended_use": {
+          "safe_use": ["medical_applications"],
+          "unsafe_use": ["educational_model_training"],
+          "conjunctional_use": {
+            "safe_datasets": [],
+            "practices": []
+          }
+        }
+      },
+      "transformations": {
+        "annotations_and_training": {
+          "method": "clinical_annotation",
+          "annotators": "medical_professionals",
+          "tasks": ["record_validation", "attribute_labeling"]
+        },
+        "validation_methods": {
+          "skew_notes": []
+        },
+        "sampling_methods": {
+          "criteria": "medical_relevance"
+        },
+        "known_applications_and_benchmarks": {
+          "object_detection": null,
+          "fairness_evaluation": null
+        }
+      },
+      "terms_of_art": {
+        "sensitivity": "high_sensitivity_implies_strict_access_and_usage_controls",
+        "restriction_usage": "model_training_is_restricted_outside_of_medical_domain"
+      },
+      "reflections_on_data": {
+        "notes": [
+          "data_must_be_handled_under_strict_privacy_and_ethical_guidelines",
+          "misuse_in_non_medical_domains_may_pose_risks_to_individual_privacy"
+        ]
+      }
+    },
+    {
+      "id": "data_2",
+      "data_card_section": {
+        "title": "open_images_extended_miap",
+        "link_to_dataset": "link_to_dataset",
+        "link_to_paper": "link_to_paper",
+        "description": "100,000 images sampled from Open Images V6 with bounding boxes annotated for perceived gender presentation and age range presentation."
+      },
+      "summary": {
+        "data_type": "static_data",
+        "primary_format": "annotations_for_image_data",
+        "total_instances": 100000,
+        "bounding_boxes": 454331,
+        "splits": {
+          "training": 70000,
+          "validation": 7410,
+          "testing": 22590
+        },
+        "human_annotated": true,
+        "labeling_method": "manual"
+      },
+      "authorship": {
+        "publisher": "google_llc",
+        "industry_type": "corporate_tech",
+        "contacts": {
+          "publisher_contact": "open_images_extended",
+          "author_contact": "open-images-extended+miap@google.com",
+          "authors": [
+            "candice_schumann",
+            "susanna_ricco",
+            "utsav_prabhu",
+            "vittorio_ferrari",
+            "caroline_pantofaru"
+          ]
+        },
+        "year": 2021
+      },
+      "dataset": {
+        "overview": {
+          "source": "open_images_v6",
+          "selection": "100k_randomly_sampled_images_with_at_least_one_person_box",
+          "excluded_data": "none"
+        },
+        "example_of_data_points": {
+          "image_id": "164b0e6d1fcf8e61",
+          "label_name": "/m/01g317",
+          "confidence": 1,
+          "xmin": 0.897112,
+          "xmax": 0.987365,
+          "ymin": 0.615523,
+          "ymax": 0.895307,
+          "is_occluded": 0,
+          "is_truncated": 1,
+          "is_group_of": 0,
+          "is_depiction_of": 0,
+          "is_inside_of": 0,
+          "gender_presentation": "predominantly_masculine",
+          "age_presentation": "middle"
+        },
+        "motivations_and_intentions": {
+          "purpose": ["training", "testing", "validation"],
+          "domain": ["machine_learning", "object_recognition"],
+          "primary_motivation": "fairness_research_and_evaluation_in_person_detection",
+          "intended_use": [
+            "person_detection",
+            "fairness_evaluation",
+            "object_detection"
+          ]
+        },
+        "access_retention_and_wipout": {
+          "access": "open_access",
+          "cost": "free",
+          "prerequisites": "read_note_on_perceived_gender_and_age_presentation_and_acceptable_use"
+        },
+        "dataset_provenance": {
+          "derived_from": "open_images_v6",
+          "annotation_period": "late_2019_to_early_2020",
+          "release_date": "2021_05",
+          "version": "1.0",
+          "status": "actively_maintained"
+        },
+        "human_and_other_sensitive_attributes": {
+          "attributes": ["age", "gender"],
+          "intentionality": {
+            "age": "intended",
+            "gender": "intended"
+          },
+          "distribution": {
+            "age_presentation": {
+              "young": "6.3%",
+              "middle": "51.4%",
+              "older": "2.0%",
+              "unknown": "40.2%"
+            },
+            "gender_presentation": {
+              "predominantly_feminine": "22.2%",
+              "predominantly_masculine": "38.3%",
+              "unknown": "39.5%"
+            }
+          }
+        },
+        "extended_use": {
+          "safe_use": [
+            "person_detection",
+            "fairness_evaluations",
+            "fairness_research"
+          ],
+          "unsafe_use": [
+            "gender_classification",
+            "age_classification"
+          ],
+          "conjunctional_use": {
+            "safe_datasets": ["open_images_v6"],
+            "practices": ["analyzing_bounding_boxes_not_annotated_under_open_images_v6_procedure"]
+          }
+        }
+      },
+      "transformations": {
+        "annotations_and_training": {
+          "method": "human_annotation",
+          "annotators": "compensated_workers_in_india",
+          "tasks": [
+            "bounding_box_creation",
+            "label_gender_presentation",
+            "label_age_range"
+          ]
+        },
+        "validation_methods": {
+          "skew_notes": [
+            "gender_presentation_skewed_toward_predominantly_masculine_and_unknown",
+            "age_range_skewed_toward_middle"
+          ]
+        },
+        "sampling_methods": {
+          "criteria": "random_sampling_of_images_with_at_least_one_person_box"
+        },
+        "known_applications_and_benchmarks": {
+          "object_detection": "trainable_via_tensorflow_object_detection_api",
+          "fairness_evaluation": "evaluations_over_gender_and_age_presentation_splits"
+        }
+      },
+      "terms_of_art": {
+        "gender_presentation": "predominantly_feminine, predominantly_masculine, unknown",
+        "age_presentation": "young, middle, older, unknown",
+        "note": "perceived_attributes_not_actual_identity_or_age"
+      },
+      "reflections_on_data": {
+        "box_size_analysis": {
+          "unknown_attributes": {
+            "small_boxes": "48.5_percent_less_than_1_percent_image_area"
+          },
+          "known_attributes": {
+            "small_boxes": "17.2_percent_less_than_1_percent_image_area",
+            "large_boxes": "40.1_percent_greater_than_10_percent_image_area"
+          },
+          "missing_annotations": {
+            "count": "approximately_100000_boxes",
+            "size_distribution": {
+              "greater_than_1_percent": "57%",
+              "greater_than_5_percent": "26%",
+              "greater_than_10_percent": "15%"
+            }
+          }
+        }
+      }
+    }
+
+
+  ]
+}

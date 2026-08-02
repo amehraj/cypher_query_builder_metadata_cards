@@ -37,6 +37,7 @@ The application provides the following core capabilities:
 - schema.js — defines the available graph relationships used by the query builder.
 - request.js — example analysis request used by the application.
 - analysis_requirement_list.js — additional sample analysis requirements.
+- metadata_cards/ — contains metadata card JSON files used to define the knowledge graph content. Users can create these files with their own metadata cards to populate a customized graph in Neo4j.
 - neo4j_data_importer/ — contains a Neo4j import package for loading the graph model and data into Neo4j Aura.
 
 ## Prerequisites
@@ -62,6 +63,7 @@ Follow these steps from start to finish to run the application with Neo4j:
    - Go to the Import tab.
    - Upload the zip file from the neo4j_data_importer folder.
    - Choose the Open model with data option to load the graph model and example data.
+   - The metadata_cards folder contains example metadata cards that are used to define the knowledge graph content. If you want to build your own graph version, create or edit these metadata card files with your own entities and relationships and define your own graph model and data.
 
 4. Define the analysis request in request.js or analysis_requirement_list.js according to the use case you want to test. A sample is already provided in the file. The request object should include:
    - analysisNode: the starting node for the query.

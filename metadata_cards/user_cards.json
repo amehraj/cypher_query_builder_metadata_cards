@@ -1,0 +1,26 @@
+{
+  "user_cards": [
+    {
+      "id": "user_1",
+      "role": ["patient"],
+      "assigned_doctor": "user_2",
+      "age": 40,
+      "symptom": "leg_pain",
+      "data_storing_consent": true
+    },
+    {
+      "id": "user_2",
+      "role": ["doctor"],
+      "assigned_patient": "user_1",
+      "specialization": "surgery"
+    },
+    {
+      "id": "user_3",
+      "role": ["patient"],
+      "assigned_doctor": "user_3",
+      "age": 31,
+      "symptom": "headache",
+      "data_storing_consent": true
+    }
+  ]
+}

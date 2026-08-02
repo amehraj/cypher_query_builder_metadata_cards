@@ -1,0 +1,136 @@
+{
+  "model_cards": [
+    {
+        "id": "model_1",
+        "model_details": {
+          "provider": "NVIDIA",
+          "name": "EmotionNet",
+          "version": "v1.0",
+          "type": "classification",
+          "architecture": {
+            "layers": 5,
+            "type": "fully_connected"
+          },
+          "training_algorithm": {
+            "framework": "TAO Toolkit",
+            "loss_function": "categorical_crossentropy"
+          },
+          "license": "NVIDIA Model EULA"
+        },
+        "intended_use": {
+          "primary": {
+            "task": "emotion_classification",
+            "users": ["developers", "video analytics engineers"],
+            "domain": "facial emotion recognition"
+          },
+          "secondary": {
+            "task": "transfer_learning",
+            "users": ["researchers", "ML engineers"],
+            "domain": "custom emotion datasets"
+          }
+        },
+        "factors": {
+          "hardware": ["Jetson Nano", "Xavier NX", "AGX Xavier", "NVIDIA T4 GPU"],
+          "software": ["TAO Toolkit", "DeepStream 6.0", "TensorRT"]
+        },
+        "evaluation": {
+          "dataset": "Multi-PIE",
+          "samples": 71020,
+          "metrics": ["precision", "recall", "f1_score"],
+          "results": {
+            "disgust": { "precision": 0.8156, "recall": 0.7302, "f1_score": 0.7705, "samples": 6300 },
+            "happy": { "precision": 0.8196, "recall": 0.9303, "f1_score": 0.8714, "samples": 13480 },
+            "neutral": { "precision": 0.9513, "recall": 0.9405, "f1_score": 0.9459, "samples": 33260 },
+            "scream": { "precision": 0.9835, "recall": 0.9944, "f1_score": 0.9889, "samples": 7180 },
+            "squint": { "precision": 0.7642, "recall": 0.6482, "f1_score": 0.7014, "samples": 5400 },
+            "surprise": { "precision": 0.9328, "recall": 0.9259, "f1_score": 0.9294, "samples": 5400 },
+            "average": { "precision": 0.8778, "recall": 0.8616, "f1_score": 0.8679 },
+            "weighted_average": { "precision": 0.9019, "recall": 0.9020, "f1_score": 0.9007 }
+          }
+        },
+        "training_data": {
+          "dataset": "Multi-PIE",
+          "size": "750K+ images",
+          "subjects": 337,
+          "conditions": {
+            "viewpoints": 15,
+            "illumination": 19,
+            "sessions": "up to 4"
+          },
+          "labeling": {
+            "method": "human-labeled facial landmarks",
+            "guidelines_reference": "FPENet Model Card",
+            "emotion_type": "posed"
+          }
+        },
+        "ethical_considerations": {
+          "bias": {
+            "inferred_attributes": ["emotion"],
+            "excluded_attributes": ["race", "gender", "skin type"]
+          },
+          "privacy": {
+            "biometric_scope": "facial landmarks only",
+            "data_source": "licensed Multi-PIE dataset"
+          },
+          "guidance": "Developers should assess algorithmic bias and ensure proper documentation and usage."
+        },
+        "safety": {
+          "measures": ["encrypted weights", "hardware-bound deployment"],
+          "concerns": ["unstable or occluded landmarks", "limited emotion scope"],
+          "risks": ["misclassification", "misuse in sensitive domains"]
+        },
+        "limitations": {
+          "emotion_scope": ["neutral", "happy", "surprise", "squint", "disgust", "scream"],
+          "spontaneous_emotion": false,
+          "landmark_stability_required": true
+        },
+        "regulatory_compliance": {
+          "license": "NVIDIA Model EULA",
+          "declaration": "Use implies acceptance of licensing terms"
+        },
+        "deployment": {
+          "input_format": {
+            "landmarks": {
+              "points": 68,
+              "shape": [1, 136, 1]
+            }
+          },
+          "output_format": {
+            "type": "emotion_category_label"
+          },
+          "inference": {
+            "precision": "FP16",
+            "devices": {
+              "Nano": { "batch_size": 1, "fps": 1190 },
+              "NX": { "batch_size": 1, "fps": 4016 },
+              "Xavier": { "batch_size": 1, "fps": 5988 },
+              "T4": { "batch_size": 1, "fps": 19644 }
+            }
+          },
+          "model_variants": {
+            "trainable": "trainable_v1.0",
+            "deployable": "deployable_v1.0"
+          },
+          "load_key": "nvidia_tlt"
+        },
+        "references": [
+          {
+            "title": "Multi-PIE",
+            "authors": ["Gross, R.", "Iain M.", "Jeffrey C.", "Takeo K.", "Simon B."],
+            "journal": "Image and Vision Computing",
+            "year": 2010,
+            "volume": 28,
+            "issue": 5,
+            "pages": "807–813"
+          },
+          {
+            "title": "Extended Cohn-Kanade Dataset (CK+)",
+            "authors": ["Lucey, Patrick", "Jeffrey F. Cohn", "Takeo Kanade", "Jason Saragih", "Zara Ambadar", "Iain Matthews"],
+            "conference": "IEEE CVPR Workshops",
+            "year": 2010,
+            "pages": "94–101"
+          }
+        ]
+      }
+  ]
+}

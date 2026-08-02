@@ -1,0 +1,29 @@
+{
+  "component_cards": [
+    {
+      "id": "component_1",
+      "access_roles": ["patient", "doctor"],
+      "action": "view_record",
+      "data_source": "data_1"
+    },
+    {
+      "id": "component_2",
+      "access_roles": ["patient"],
+      "action": "add_record",
+      "data_source": "data_1",
+      "data_consent_check": true
+    },
+    {
+      "id": "component_3",
+      "access_roles": ["patient"],
+      "action": "delete_record",
+      "data_source": "data_1"
+    },
+    {
+      "id": "component_4",
+      "access_roles": ["doctor"],
+      "action": "use_model",
+      "model_source": "model_1"
+    }
+  ]
+}
