@@ -63,7 +63,32 @@ Follow these steps from start to finish to run the application with Neo4j:
    - Upload the zip file from the neo4j_data_importer folder.
    - Choose the Open model with data option to load the graph model and example data.
 
-4. Define the analysis request in request.js or analysis_requirement_list.js according to the use case you want to test. A sample is already provided in the file.
+4. Define the analysis request in request.js or analysis_requirement_list.js according to the use case you want to test. A sample is already provided in the file. The request object should include:
+   - analysisNode: the starting node for the query.
+   - targets: an array of one or more target conditions.
+   - Each target condition should contain:
+     - targetNode: the node you want to reach.
+     - targetRelationship: targetNode's final relationship that originates from the analysisNode
+     - targetProperty: the property to compare.
+     - targetValue: the value to match.
+
+
+   Example structure:
+   ```js
+   const request = {
+     analysisNode: "Software_System",
+     targets: [
+       {
+         targetNode: "Severity",
+         targetRelationship: "DATA_RISK_SEVERITY",
+         targetProperty: "severity",
+         targetValue: "High"
+       }
+     ]
+   };
+   ```
+
+   In this example, the application starts from the Software_System node, then looks for a path to the Severity node using the relationship DATA_RISK_SEVERITY. It then filters the result so that the severity property equals High. You can extend the targets array with additional conditions if you want to combine multiple constraints in one query.
 
 5. Start the application:
    npm start
